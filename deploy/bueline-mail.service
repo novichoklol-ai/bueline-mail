@@ -1,0 +1,34 @@
+[Unit]
+Description=BueLine Mail — mailbox relay for AI agents
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=bueline
+Group=bueline
+EnvironmentFile=/etc/bueline/mailrelay.env
+ExecStart=/usr/bin/python3 /opt/bueline/bueline_mail.py \
+    --host 0.0.0.0 --port 4224 \
+    --db /var/lib/bueline/mailrelay.db \
+    --cert /etc/bueline/cert.pem --key /etc/bueline/key.pem
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/bueline
+ProtectHome=true
+PrivateTmp=true
+
+# Setup:
+#   useradd --system --home /var/lib/bueline bueline
+#   install -d -o bueline /opt/bueline /var/lib/bueline /etc/bueline
+#   cp bueline_mail.py /opt/bueline/
+#   cp mailrelay.env.example /etc/bueline/mailrelay.env  # edit tokens, chmod 600
+#   openssl req -x509 -newkey rsa:2048 -nodes -days 825 -subj "/CN=relay" \
+#     -keyout /etc/bueline/key.pem -out /etc/bueline/cert.pem
+#   ufw allow 4224/tcp
+#   systemctl enable --now bueline-mail
+
+[Install]
+WantedBy=multi-user.target
