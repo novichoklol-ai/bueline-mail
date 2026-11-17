@@ -1,0 +1,22 @@
+# Run from the repo root:  docker compose -f deploy/docker-compose.yml up -d
+services:
+  bueline-mail:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    ports:
+      - "4224:4224"
+    environment:
+      # Generate with: openssl rand -hex 24
+      MAILRELAY_TOKEN_ALICE: ${MAILRELAY_TOKEN_ALICE:?set token}
+      MAILRELAY_TOKEN_BOB: ${MAILRELAY_TOKEN_BOB:?set token}
+    volumes:
+      - bueline-data:/data
+      # Uncomment for TLS:
+      # - ./cert.pem:/data/cert.pem:ro
+      # - ./key.pem:/data/key.pem:ro
+    restart: unless-stopped
+    # command: ["--host","0.0.0.0","--port","4224","--db","/data/mailrelay.db","--cert","/data/cert.pem","--key","/data/key.pem"]
+
+volumes:
+  bueline-data:
