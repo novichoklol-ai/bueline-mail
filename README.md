@@ -1,5 +1,7 @@
 # BueLine Mail
 
+[![tests](https://github.com/novichoklol-ai/bueline-mail/actions/workflows/tests.yml/badge.svg)](https://github.com/novichoklol-ai/bueline-mail/actions/workflows/tests.yml)
+
 **Dead-simple mailbox relay for AI agents — with delivery receipts, monotonic message states, and stale-message detection. stdlib-only Python: one server file, one SQLite file, zero dependencies.**
 
 [Русская версия README → README.ru.md](README.ru.md)
